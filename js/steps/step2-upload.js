@@ -20,7 +20,7 @@ export class Step2Upload {
         container.innerHTML = `
             <div class="step-content">
                 <div class="text-center mb-4">
-                    <h2 class="h3 mb-2">Upload Your File</h2>
+                    <h2 class="display-6 fw-bold mb-3">Upload Your File</h2>
                     <p class="text-muted">Select a CSV file to import and configure parsing options</p>
                 </div>
                 
@@ -99,7 +99,7 @@ export class Step2Upload {
             <div class="format-options">
                 <div class="mb-0">
                     <label class="form-label">Delimiter</label>
-                    <select class="form-select form-select-sm" id="opt-delimiter">
+                    <select class="form-select" id="opt-delimiter">
                         ${delimiters.map(d => `
                             <option value="${d.value}" ${options.delimiter === d.value ? 'selected' : ''}>
                                 ${d.label}
@@ -110,7 +110,7 @@ export class Step2Upload {
                 
                 <div class="mb-0">
                     <label class="form-label">Encoding</label>
-                    <select class="form-select form-select-sm" id="opt-encoding">
+                    <select class="form-select" id="opt-encoding">
                         ${encodings.map(e => `
                             <option value="${e.value}" ${options.encoding === e.value ? 'selected' : ''}>
                                 ${e.label}
@@ -129,7 +129,7 @@ export class Step2Upload {
                 
                 <div class="mb-0">
                     <label class="form-label">Skip rows</label>
-                    <input type="number" class="form-control form-control-sm" id="opt-skip" 
+                    <input type="number" class="form-control" id="opt-skip" 
                         value="${options.skipRows}" min="0" max="100">
                 </div>
             </div>
@@ -256,6 +256,7 @@ export class Step2Upload {
             const fastTrackBtn = document.getElementById('btn-fast-track');
             if (fastTrackBtn) {
                 fastTrackBtn.addEventListener('click', () => {
+                    this.app.state.autoStartImport = true;
                     this.app.wizard.goToStep(4);
                 });
             }

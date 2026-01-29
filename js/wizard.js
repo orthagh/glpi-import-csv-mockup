@@ -141,6 +141,7 @@ export class Wizard {
     updateButtons() {
         // Previous button
         this.btnPrev.disabled = this.currentStep === 1;
+        this.btnPrev.style.visibility = this.currentStep === 1 ? 'hidden' : 'visible';
         this.btnPrev.onclick = () => this.prevStep();
         
         // Next button

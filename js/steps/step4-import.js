@@ -18,6 +18,13 @@ export class Step4Import {
     render() {
         const container = document.getElementById('wizard-content');
         
+        // Auto-start import if flag is set
+        if (this.app.state.autoStartImport && !this.isImporting && !this.importComplete) {
+            this.app.state.autoStartImport = false;
+            this.startImport();
+            return;
+        }
+        
         if (this.importComplete && this.app.state.importResults) {
             container.innerHTML = this.renderReport();
         } else if (this.isImporting) {
@@ -42,12 +49,15 @@ export class Step4Import {
                 <div class="text-center mb-4">
                     <div class="illustration illustration-large">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
-                            <circle cx="60" cy="60" r="55" fill="#d3f9d8" stroke="#40c057" stroke-width="2"/>
-                            <path d="M45 60 L55 70 L75 50" stroke="#40c057" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                            <circle cx="60" cy="60" r="30" stroke="#40c057" stroke-width="2" fill="none" stroke-dasharray="4 4"/>
+                            <rect x="25" y="40" width="70" height="50" rx="4" fill="#e9ecef" stroke="#ced4da" stroke-width="2"/>
+                            <rect x="35" y="50" width="50" height="6" rx="2" fill="#adb5bd"/>
+                            <rect x="35" y="62" width="50" height="6" rx="2" fill="#adb5bd"/>
+                            <rect x="35" y="74" width="30" height="6" rx="2" fill="#adb5bd"/>
+                            <circle cx="95" cy="85" r="20" fill="#206bc4" stroke="white" stroke-width="3"/>
+                            <path d="M88 85l5 5l10 -10" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </div>
-                    <h2 class="h3 mb-2">Ready to Import</h2>
+                    <h2 class="display-6 fw-bold mb-3">Ready to Import</h2>
                     <p class="text-muted">Review your settings and start the import</p>
                 </div>
                 
@@ -75,7 +85,7 @@ export class Step4Import {
                 </div>
                 
                 <div class="text-center mt-4 d-flex justify-content-center gap-3">
-                    <button class="btn btn-ghost-secondary shadow-sm" onclick="window.csvImportApp.wizard.prevStep()">
+                    <button class="btn btn-ghost-secondary" onclick="window.csvImportApp.wizard.prevStep()">
                         Back
                     </button>
                     <button class="btn btn-success" id="start-import">
@@ -95,7 +105,7 @@ export class Step4Import {
         return `
             <div class="step-content">
                 <div class="text-center mb-4">
-                    <h2 class="h3 mb-2">Importing...</h2>
+                    <h2 class="display-6 fw-bold mb-3">Importing...</h2>
                     <p class="text-muted">Please wait while your data is being processed</p>
                 </div>
                 
@@ -133,11 +143,11 @@ export class Step4Import {
                 <div class="text-center mb-4">
                     <div class="illustration illustration-large">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
-                            <circle cx="60" cy="60" r="55" fill="#d3f9d8" stroke="#40c057" stroke-width="2"/>
-                            <path d="M40 60 L55 75 L80 45" stroke="#40c057" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                            <circle cx="60" cy="60" r="50" fill="#e6fcf5" stroke="#2fb344" stroke-width="2"/>
+                            <path d="M35 60l15 15l35 -35" stroke="#2fb344" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </div>
-                    <h2 class="h3 mb-2">Import Complete!</h2>
+                    <h2 class="display-6 fw-bold mb-3">Import Complete!</h2>
                     <p class="text-muted">Processed ${total} items</p>
                 </div>
                 

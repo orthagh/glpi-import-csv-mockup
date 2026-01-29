@@ -29,7 +29,7 @@ export class Step1Start {
                             <path d="M75 25 L85 35 L75 35 Z" fill="#339af0"/>
                         </svg>
                     </div>
-                    <h2 class="h3 mb-2">Import CSV Data</h2>
+                    <h2 class="display-6 fw-bold mb-3">Import CSV Data</h2>
                     <p class="text-muted">Import data from CSV files into GLPI assets</p>
                 </div>
                 
@@ -94,7 +94,7 @@ export class Step1Start {
                             </div>
                         </div>
                         <div class="template-item-actions">
-                            <button class="btn btn-ghost-danger btn-icon btn-sm" data-delete-template="${t.id}" title="Delete template">
+                            <button class="btn btn-ghost-danger btn-icon p-2" data-delete-template="${t.id}" title="Delete template">
                                 <i class="ti ti-trash"></i>
                             </button>
                         </div>

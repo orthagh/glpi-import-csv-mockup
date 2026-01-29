@@ -29,7 +29,7 @@ export class Step3Mapping {
         container.innerHTML = `
             <div class="step-content">
                 <div class="text-center mb-4">
-                    <h2 class="h3 mb-2">Configure Mapping</h2>
+                    <h2 class="display-6 fw-bold mb-3">Configure Mapping</h2>
                     <p class="text-muted">Select the asset type and map CSV columns to GLPI fields</p>
                 </div>
                 
@@ -51,19 +51,14 @@ export class Step3Mapping {
     renderTypeSelector() {
         return `
             <div class="mb-5 template-selection-container border-bottom pb-4">
-                 <h4 class="mb-4 text-muted">
+                 <h4 class="mb-4 text-dark fs-3">
                     <i class="ti ti-table-alias me-2"></i>
                     Target Asset Type
                 </h4>
                 
                 <div class="d-flex align-items-center">
-                    <div class="me-3">
-                        <div class="avatar bg-blue-lt">
-                            <i class="ti ti-package fs-2"></i>
-                        </div>
-                    </div>
                     <div class="flex-grow-1">
-                        <select class="form-select form-select-lg" id="glpi-type">
+                        <select class="form-select" id="glpi-type">
                             <option value="">Select asset type...</option>
                             ${this.types.map(t => `
                                 <option value="${t.id}" ${this.app.state.glpiType === t.id ? 'selected' : ''}>
@@ -114,8 +109,8 @@ export class Step3Mapping {
         
         return `
             <div class="mapping-list">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h4 class="mb-0 text-muted">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="text-dark fs-3">
                         <i class="ti ti-arrows-exchange me-2"></i>
                         Field Mappings
                     </h4>
@@ -126,7 +121,7 @@ export class Step3Mapping {
                     <div>CSV Column</div>
                     <div></div>
                     <div>GLPI Field</div>
-                    <div>Actions</div>
+                    <div></div>
                 </div>
                 
                 ${mappings.map((mapping, index) => this.renderMappingRow(mapping, index)).join('')}
@@ -153,7 +148,7 @@ export class Step3Mapping {
                 </div>
                 
                 <div class="mapping-glpi-field">
-                    <select class="form-select form-select-sm" data-mapping-index="${index}">
+                    <select class="form-select" data-mapping-index="${index}">
                         <option value="">-- Skip this column --</option>
                         ${this.searchOptions.map(opt => `
                             <option value="${opt.id}" 
@@ -166,7 +161,7 @@ export class Step3Mapping {
                 </div>
                 
                 <div class="mapping-actions d-flex align-items-center gap-2">
-                    <button class="btn btn-icon btn-sm ${mapping.isReconciliationKey ? 'btn-primary' : 'btn-ghost-secondary'}" 
+                    <button class="btn btn-icon p-2 ${mapping.isReconciliationKey ? 'btn-primary' : 'btn-ghost-secondary'}" 
                         data-toggle-key="${index}" 
                         data-bs-toggle="tooltip" 
                         title="${mapping.isReconciliationKey ? 'Used as reconciliation key' : 'Click to use as reconciliation key'}">
@@ -197,14 +192,11 @@ export class Step3Mapping {
                             value="${this.escapeHtml(currentName)}"
                             placeholder="Enter template name...">
                     </div>
-                    <button class="btn ${isEditing ? 'btn-outline-primary' : 'btn-outline-secondary'}" id="save-template" 
+                    <button class="btn ${isEditing ? 'btn-primary' : 'btn-ghost-secondary'}" id="save-template" 
                         data-action="${isEditing ? 'update' : 'create'}">
                         <i class="ti ${isEditing ? 'ti-check' : 'ti-download'} me-1"></i>
                         ${isEditing ? 'Update' : 'Save'}
                     </button>
-                    <span id="save-feedback" class="text-success small fw-bold d-none">
-                        <i class="ti ti-check me-1"></i> ${isEditing ? 'Updated!' : 'Saved!'}
-                    </span>
                 </div>
             </div>
         `;
@@ -294,14 +286,18 @@ export class Step3Mapping {
                     }
                 }
                 
-                // Show feedback
-                const feedback = document.getElementById('save-feedback');
-                if (feedback) {
-                    feedback.classList.remove('d-none');
-                    setTimeout(() => {
-                        feedback.classList.add('d-none');
-                    }, 3000);
-                }
+                // Show feedback on button
+                const originalHtml = saveBtn.innerHTML;
+                const originalClass = saveBtn.className;
+                
+                saveBtn.innerHTML = '<i class="ti ti-check me-1"></i> Saved!';
+                saveBtn.classList.remove('btn-ghost-secondary', 'btn-primary');
+                saveBtn.classList.add('btn-success');
+                
+                setTimeout(() => {
+                    saveBtn.innerHTML = originalHtml;
+                    saveBtn.className = originalClass;
+                }, 2000);
             });
         }
     }

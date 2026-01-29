@@ -75,7 +75,7 @@ export class MockGlpi {
             const row = data[i];
             
             // Simulate processing time
-            await this.delay(50 + Math.random() * 100);
+            await this.delay(10 + Math.random() * 20);
             
             // Simulate random outcomes
             const outcome = Math.random();
