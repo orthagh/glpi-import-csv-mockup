@@ -1,0 +1,144 @@
+{
+    "types": [
+        {
+            "id": "Computer",
+            "name": "Computer",
+            "icon": "ti-device-desktop"
+        },
+        {
+            "id": "Monitor",
+            "name": "Monitor",
+            "icon": "ti-device-tv"
+        },
+        {
+            "id": "NetworkEquipment",
+            "name": "Network Equipment",
+            "icon": "ti-router"
+        },
+        {
+            "id": "Peripheral",
+            "name": "Peripheral",
+            "icon": "ti-keyboard"
+        },
+        {
+            "id": "Phone",
+            "name": "Phone",
+            "icon": "ti-phone"
+        },
+        {
+            "id": "Printer",
+            "name": "Printer",
+            "icon": "ti-printer"
+        },
+        {
+            "id": "Software",
+            "name": "Software",
+            "icon": "ti-apps"
+        }
+    ],
+    "searchOptions": {
+        "Computer": [
+            { "id": 1, "name": "Name", "field": "name", "required": true },
+            { "id": 2, "name": "ID", "field": "id", "required": false },
+            { "id": 3, "name": "Entity", "field": "entities_id", "required": false },
+            { "id": 4, "name": "Type", "field": "computertypes_id", "required": false },
+            { "id": 5, "name": "Model", "field": "computermodels_id", "required": false },
+            { "id": 6, "name": "Serial Number", "field": "serial", "required": false },
+            { "id": 7, "name": "Asset Tag", "field": "otherserial", "required": false },
+            { "id": 10, "name": "Status", "field": "states_id", "required": false },
+            { "id": 11, "name": "Location", "field": "locations_id", "required": false },
+            { "id": 23, "name": "Manufacturer", "field": "manufacturers_id", "required": false },
+            { "id": 24, "name": "User", "field": "users_id", "required": false },
+            { "id": 31, "name": "UUID", "field": "uuid", "required": false },
+            { "id": 32, "name": "Network", "field": "networks_id", "required": false },
+            { "id": 45, "name": "Operating System", "field": "operatingsystems_id", "required": false },
+            { "id": 46, "name": "OS Version", "field": "operatingsystemversions_id", "required": false },
+            { "id": 80, "name": "Group", "field": "groups_id", "required": false },
+            { "id": 16, "name": "Comment", "field": "comment", "required": false },
+            { "id": 19, "name": "Last Update", "field": "date_mod", "required": false }
+        ],
+        "Monitor": [
+            { "id": 1, "name": "Name", "field": "name", "required": true },
+            { "id": 2, "name": "ID", "field": "id", "required": false },
+            { "id": 3, "name": "Entity", "field": "entities_id", "required": false },
+            { "id": 4, "name": "Type", "field": "monitortypes_id", "required": false },
+            { "id": 5, "name": "Model", "field": "monitormodels_id", "required": false },
+            { "id": 6, "name": "Serial Number", "field": "serial", "required": false },
+            { "id": 7, "name": "Asset Tag", "field": "otherserial", "required": false },
+            { "id": 10, "name": "Status", "field": "states_id", "required": false },
+            { "id": 11, "name": "Location", "field": "locations_id", "required": false },
+            { "id": 23, "name": "Manufacturer", "field": "manufacturers_id", "required": false },
+            { "id": 24, "name": "User", "field": "users_id", "required": false },
+            { "id": 13, "name": "Size", "field": "size", "required": false },
+            { "id": 16, "name": "Comment", "field": "comment", "required": false }
+        ],
+        "Software": [
+            { "id": 1, "name": "Name", "field": "name", "required": true },
+            { "id": 2, "name": "ID", "field": "id", "required": false },
+            { "id": 3, "name": "Entity", "field": "entities_id", "required": false },
+            { "id": 4, "name": "Category", "field": "softwarecategories_id", "required": false },
+            { "id": 23, "name": "Manufacturer", "field": "manufacturers_id", "required": false },
+            { "id": 24, "name": "User", "field": "users_id", "required": false },
+            { "id": 80, "name": "Group", "field": "groups_id", "required": false },
+            { "id": 16, "name": "Comment", "field": "comment", "required": false },
+            { "id": 90, "name": "Is Valid", "field": "is_valid", "required": false }
+        ],
+        "NetworkEquipment": [
+            { "id": 1, "name": "Name", "field": "name", "required": true },
+            { "id": 2, "name": "ID", "field": "id", "required": false },
+            { "id": 3, "name": "Entity", "field": "entities_id", "required": false },
+            { "id": 4, "name": "Type", "field": "networkequipmenttypes_id", "required": false },
+            { "id": 5, "name": "Model", "field": "networkequipmentmodels_id", "required": false },
+            { "id": 6, "name": "Serial Number", "field": "serial", "required": false },
+            { "id": 7, "name": "Asset Tag", "field": "otherserial", "required": false },
+            { "id": 10, "name": "Status", "field": "states_id", "required": false },
+            { "id": 11, "name": "Location", "field": "locations_id", "required": false },
+            { "id": 23, "name": "Manufacturer", "field": "manufacturers_id", "required": false },
+            { "id": 32, "name": "Network", "field": "networks_id", "required": false },
+            { "id": 14, "name": "RAM", "field": "ram", "required": false },
+            { "id": 16, "name": "Comment", "field": "comment", "required": false }
+        ],
+        "Peripheral": [
+            { "id": 1, "name": "Name", "field": "name", "required": true },
+            { "id": 2, "name": "ID", "field": "id", "required": false },
+            { "id": 3, "name": "Entity", "field": "entities_id", "required": false },
+            { "id": 4, "name": "Type", "field": "peripheraltypes_id", "required": false },
+            { "id": 5, "name": "Model", "field": "peripheralmodels_id", "required": false },
+            { "id": 6, "name": "Serial Number", "field": "serial", "required": false },
+            { "id": 7, "name": "Asset Tag", "field": "otherserial", "required": false },
+            { "id": 10, "name": "Status", "field": "states_id", "required": false },
+            { "id": 11, "name": "Location", "field": "locations_id", "required": false },
+            { "id": 23, "name": "Manufacturer", "field": "manufacturers_id", "required": false },
+            { "id": 24, "name": "User", "field": "users_id", "required": false },
+            { "id": 16, "name": "Comment", "field": "comment", "required": false }
+        ],
+        "Phone": [
+            { "id": 1, "name": "Name", "field": "name", "required": true },
+            { "id": 2, "name": "ID", "field": "id", "required": false },
+            { "id": 3, "name": "Entity", "field": "entities_id", "required": false },
+            { "id": 4, "name": "Type", "field": "phonetypes_id", "required": false },
+            { "id": 5, "name": "Model", "field": "phonemodels_id", "required": false },
+            { "id": 6, "name": "Serial Number", "field": "serial", "required": false },
+            { "id": 7, "name": "Asset Tag", "field": "otherserial", "required": false },
+            { "id": 10, "name": "Status", "field": "states_id", "required": false },
+            { "id": 11, "name": "Location", "field": "locations_id", "required": false },
+            { "id": 23, "name": "Manufacturer", "field": "manufacturers_id", "required": false },
+            { "id": 24, "name": "User", "field": "users_id", "required": false },
+            { "id": 16, "name": "Comment", "field": "comment", "required": false }
+        ],
+        "Printer": [
+            { "id": 1, "name": "Name", "field": "name", "required": true },
+            { "id": 2, "name": "ID", "field": "id", "required": false },
+            { "id": 3, "name": "Entity", "field": "entities_id", "required": false },
+            { "id": 4, "name": "Type", "field": "printertypes_id", "required": false },
+            { "id": 5, "name": "Model", "field": "printermodels_id", "required": false },
+            { "id": 6, "name": "Serial Number", "field": "serial", "required": false },
+            { "id": 7, "name": "Asset Tag", "field": "otherserial", "required": false },
+            { "id": 10, "name": "Status", "field": "states_id", "required": false },
+            { "id": 11, "name": "Location", "field": "locations_id", "required": false },
+            { "id": 23, "name": "Manufacturer", "field": "manufacturers_id", "required": false },
+            { "id": 32, "name": "Network", "field": "networks_id", "required": false },
+            { "id": 16, "name": "Comment", "field": "comment", "required": false }
+        ]
+    }
+}

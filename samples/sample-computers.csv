@@ -1,0 +1,11 @@
+name,serial,type,location,user,comment
+PC-DEV-001,SN123456789,Desktop,Building A - Floor 1,john.doe,Developer workstation
+PC-DEV-002,SN234567890,Desktop,Building A - Floor 1,jane.smith,Developer workstation
+LAPTOP-MKT-001,SN345678901,Laptop,Building B - Floor 2,mike.johnson,Marketing team laptop
+LAPTOP-MKT-002,SN456789012,Laptop,Building B - Floor 2,sarah.williams,Marketing team laptop
+SERVER-WEB-01,SN567890123,Server,Datacenter,admin,Production web server
+SERVER-DB-01,SN678901234,Server,Datacenter,admin,Production database server
+PC-HR-001,SN789012345,Desktop,Building A - Floor 3,emily.brown,HR department
+PC-HR-002,SN890123456,Desktop,Building A - Floor 3,robert.davis,HR department
+LAPTOP-SALES-001,SN901234567,Laptop,Building C - Floor 1,chris.wilson,Sales team laptop
+LAPTOP-SALES-002,SN012345678,Laptop,Building C - Floor 1,amanda.taylor,Sales team laptop

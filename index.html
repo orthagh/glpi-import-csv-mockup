@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV Import Wizard - GLPI</title>
+    
+    <!-- Tabler CSS (includes Bootstrap) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0/dist/css/tabler.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.3.0/dist/tabler-icons.min.css">
+    
+    <!-- Custom Wizard Styles -->
+    <link rel="stylesheet" href="css/wizard.css">
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <!-- Header -->
+    <header class="navbar navbar-expand-md d-print-none">
+        <div class="container-xl">
+            <h1 class="navbar-brand d-none-navbar-btn">
+                <span class="text-primary">GLPI</span>
+                <span class="text-muted mx-2">/</span>
+                <span>CSV Import</span>
+            </h1>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="page-body flex-grow-1">
+        <div class="container-xl py-4">
+            <!-- Wizard Container -->
+            <div class="card wizard-card">
+                <div class="card-header">
+                    <!-- Step Indicators -->
+                    <nav class="wizard-steps" aria-label="Import wizard steps">
+                        <div class="wizard-step" data-step="1">
+                            <span class="wizard-step-icon">
+                                <i class="ti ti-template"></i>
+                            </span>
+                            <span class="wizard-step-label">Start</span>
+                        </div>
+                        <div class="wizard-step-connector"></div>
+                        <div class="wizard-step" data-step="2">
+                            <span class="wizard-step-icon">
+                                <i class="ti ti-upload"></i>
+                            </span>
+                            <span class="wizard-step-label">Upload</span>
+                        </div>
+                        <div class="wizard-step-connector"></div>
+                        <div class="wizard-step" data-step="3">
+                            <span class="wizard-step-icon">
+                                <i class="ti ti-arrows-exchange"></i>
+                            </span>
+                            <span class="wizard-step-label">Mapping</span>
+                        </div>
+                        <div class="wizard-step-connector"></div>
+                        <div class="wizard-step" data-step="4">
+                            <span class="wizard-step-icon">
+                                <i class="ti ti-check"></i>
+                            </span>
+                            <span class="wizard-step-label">Import</span>
+                        </div>
+                    </nav>
+                </div>
+                
+                <div class="card-body wizard-body">
+                    <!-- Step Content Container -->
+                    <div id="wizard-content">
+                        <!-- Steps will be rendered here dynamically -->
+                    </div>
+                </div>
+                
+                <div class="card-footer wizard-footer">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <button type="button" class="btn btn-ghost-secondary" id="btn-prev" disabled>
+                            <i class="ti ti-arrow-left me-1"></i>
+                            Back
+                        </button>
+                        <div class="wizard-step-count text-muted">
+                            <!-- Step count removed -->
+                        </div>
+                        <button type="button" class="btn btn-primary" id="btn-next">
+                            Next
+                            <i class="ti ti-arrow-right ms-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer footer-transparent d-print-none">
+        <div class="container-xl">
+            <div class="text-center text-muted">
+                CSV Import Wizard Prototype &mdash; GLPI
+            </div>
+        </div>
+    </footer>
+
+    <!-- PapaParse for CSV parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    
+    <!-- Tabler JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0/dist/js/tabler.min.js"></script>
+    
+    <!-- Application Scripts -->
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>

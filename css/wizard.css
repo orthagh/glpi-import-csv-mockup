@@ -1,0 +1,663 @@
+/* ==========================================================================
+   CSV Import Wizard - Custom Styles
+   Built on top of Tabler/Bootstrap
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   CSS Custom Properties
+   -------------------------------------------------------------------------- */
+:root {
+    --wizard-step-size: 48px;
+    --wizard-connector-height: 3px;
+    --wizard-transition: 0.2s ease;
+    --wizard-primary: var(--tblr-primary);
+    --wizard-muted: var(--tblr-secondary);
+}
+
+/* --------------------------------------------------------------------------
+   Wizard Card
+   -------------------------------------------------------------------------- */
+.wizard-card {
+    border: none;
+    box-shadow: var(--tblr-box-shadow-card);
+    min-height: 500px;
+}
+
+.wizard-card .card-header {
+    background: transparent;
+    border-bottom: 1px solid var(--tblr-border-color);
+    padding: 1.5rem 2rem;
+}
+
+.wizard-card .card-body {
+    padding: 2rem;
+}
+
+.wizard-card .card-footer {
+    background: transparent;
+    border-top: 1px solid var(--tblr-border-color);
+    padding: 1rem 2rem;
+}
+
+/* --------------------------------------------------------------------------
+   Wizard Steps Navigation
+   -------------------------------------------------------------------------- */
+.wizard-steps {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+}
+
+.wizard-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.wizard-step-icon {
+    width: var(--wizard-step-size);
+    height: var(--wizard-step-size);
+    border-radius: 50%;
+    background: var(--tblr-bg-surface);
+    border: 2px solid var(--tblr-border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    color: var(--tblr-secondary);
+    transition: 
+        background var(--wizard-transition),
+        border-color var(--wizard-transition),
+        color var(--wizard-transition),
+        transform var(--wizard-transition);
+}
+
+.wizard-step-label {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--tblr-secondary);
+    transition: color var(--wizard-transition);
+}
+
+.wizard-step-connector {
+    width: 80px;
+    height: var(--wizard-connector-height);
+    background: var(--tblr-border-color);
+    margin: 0 0.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: 2px;
+    transition: background var(--wizard-transition);
+}
+
+/* Active Step */
+.wizard-step.active .wizard-step-icon {
+    background: var(--wizard-primary);
+    border-color: var(--wizard-primary);
+    color: white;
+    transform: scale(1.1);
+}
+
+.wizard-step.active .wizard-step-label {
+    color: var(--wizard-primary);
+    font-weight: 600;
+}
+
+/* Completed Step */
+.wizard-step.completed .wizard-step-icon {
+    background: var(--tblr-success);
+    border-color: var(--tblr-success);
+    color: white;
+}
+
+.wizard-step.completed .wizard-step-label {
+    color: var(--tblr-success);
+}
+
+.wizard-step-connector.completed {
+    background: var(--tblr-success);
+}
+
+/* Hover on clickable steps */
+.wizard-step.clickable {
+    cursor: pointer;
+}
+
+.wizard-step.clickable:hover .wizard-step-icon {
+    transform: scale(1.05);
+}
+
+/* --------------------------------------------------------------------------
+   Wizard Content Area
+   -------------------------------------------------------------------------- */
+.wizard-body {
+    min-height: 400px;
+}
+
+#wizard-content {
+    animation: fadeIn 0.25s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Step content wrapper */
+.step-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* --------------------------------------------------------------------------
+   Step 1: Start / Template Selection
+   -------------------------------------------------------------------------- */
+.start-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.option-card {
+    border: 2px solid var(--tblr-border-color);
+    border-radius: var(--tblr-border-radius-lg);
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: 
+        border-color var(--wizard-transition),
+        box-shadow var(--wizard-transition),
+        transform var(--wizard-transition);
+}
+
+.option-card:hover {
+    border-color: var(--wizard-primary);
+    box-shadow: 0 4px 12px rgba(var(--tblr-primary-rgb), 0.15);
+    transform: translateY(-2px);
+}
+
+.option-card.selected {
+    border-color: var(--wizard-primary);
+    background: rgba(var(--tblr-primary-rgb), 0.05);
+}
+
+.option-card-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 1rem;
+    background: var(--tblr-bg-surface-secondary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+    color: var(--wizard-primary);
+}
+
+.option-card-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.option-card-desc {
+    color: var(--tblr-secondary);
+    font-size: 0.875rem;
+}
+
+/* Template List */
+.template-list {
+    margin-top: 1.5rem;
+}
+
+.template-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border: 1px solid var(--tblr-border-color);
+    border-radius: var(--tblr-border-radius);
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    transition: 
+        background var(--wizard-transition),
+        border-color var(--wizard-transition);
+}
+
+.template-item:hover {
+    background: var(--tblr-bg-surface-secondary);
+    border-color: var(--wizard-primary);
+}
+
+.template-item.selected {
+    background: rgba(var(--tblr-primary-rgb), 0.05);
+    border-color: var(--wizard-primary);
+}
+
+.template-item-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--tblr-bg-surface-secondary);
+    border-radius: var(--tblr-border-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    color: var(--wizard-primary);
+}
+
+.template-item-info {
+    flex: 1;
+}
+
+.template-item-name {
+    font-weight: 600;
+    margin-bottom: 0.125rem;
+}
+
+.template-item-meta {
+    font-size: 0.8125rem;
+    color: var(--tblr-secondary);
+}
+
+.template-item-actions {
+    display: flex;
+    gap: 0.25rem;
+}
+
+/* --------------------------------------------------------------------------
+   Step 2: File Upload
+   -------------------------------------------------------------------------- */
+.dropzone {
+    border: 2px dashed var(--tblr-border-color);
+    border-radius: var(--tblr-border-radius-lg);
+    padding: 3rem 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: 
+        border-color var(--wizard-transition),
+        background var(--wizard-transition);
+}
+
+.dropzone:hover,
+.dropzone.dragover {
+    border-color: var(--wizard-primary);
+    background: rgba(var(--tblr-primary-rgb), 0.03);
+}
+
+.dropzone-icon {
+    font-size: 3rem;
+    color: var(--tblr-secondary);
+    margin-bottom: 1rem;
+}
+
+.dropzone-text {
+    font-size: 1rem;
+    color: var(--tblr-body-color);
+    margin-bottom: 0.5rem;
+}
+
+.dropzone-hint {
+    font-size: 0.8125rem;
+    color: var(--tblr-secondary);
+}
+
+/* File Info Card */
+.file-info-card {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    background: var(--tblr-bg-surface-secondary);
+    border-radius: var(--tblr-border-radius);
+    margin-top: 1rem;
+}
+
+.file-info-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--tblr-success-lt);
+    color: var(--tblr-success);
+    border-radius: var(--tblr-border-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-right: 1rem;
+}
+
+.file-info-details {
+    flex: 1;
+}
+
+.file-info-name {
+    font-weight: 600;
+    margin-bottom: 0.125rem;
+}
+
+.file-info-meta {
+    font-size: 0.8125rem;
+    color: var(--tblr-secondary);
+}
+
+/* Format Options */
+.format-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: var(--tblr-bg-surface-secondary);
+    border-radius: var(--tblr-border-radius);
+}
+
+/* CSV Preview Table */
+.csv-preview {
+    margin-top: 1.5rem;
+    overflow-x: auto;
+}
+
+.csv-preview table {
+    font-size: 0.8125rem;
+}
+
+.csv-preview th {
+    background: var(--tblr-bg-surface-secondary);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.csv-preview td {
+    white-space: nowrap;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.csv-preview .row-number {
+    color: var(--tblr-secondary);
+    font-size: 0.75rem;
+    text-align: center;
+    width: 40px;
+}
+
+/* --------------------------------------------------------------------------
+   Step 3: Mapping
+   -------------------------------------------------------------------------- */
+.mapping-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--tblr-border-color);
+}
+
+.mapping-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.mapping-row {
+    display: grid;
+    grid-template-columns: 40% 40px 1fr 140px;
+    gap: 1rem;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background: var(--tblr-bg-surface-secondary);
+    border-radius: var(--tblr-border-radius);
+    border: 1px solid transparent;
+    transition: border-color var(--wizard-transition);
+}
+
+.mapping-row:hover {
+    border-color: var(--tblr-border-color);
+}
+
+.mapping-row.required {
+    border-left: 3px solid var(--tblr-warning);
+}
+
+.mapping-csv-col {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--tblr-font-monospace);
+    font-size: 0.875rem;
+}
+
+.mapping-arrow {
+    color: var(--tblr-secondary);
+    font-size: 1.25rem;
+}
+
+.mapping-actions {
+    display: flex;
+    gap: 0.25rem;
+}
+
+/* Save Template Modal */
+.save-template-form {
+    margin-top: 1rem;
+}
+
+/* --------------------------------------------------------------------------
+   Step 4: Import Progress & Report
+   -------------------------------------------------------------------------- */
+.import-summary {
+    background: var(--tblr-bg-surface-secondary);
+    border-radius: var(--tblr-border-radius);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.import-summary-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--tblr-border-color);
+}
+
+.import-summary-item:last-child {
+    border-bottom: none;
+}
+
+.import-progress-container {
+    margin: 2rem 0;
+}
+
+.import-progress-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+}
+
+.import-log {
+    max-height: 200px;
+    overflow-y: auto;
+    font-family: var(--tblr-font-monospace);
+    font-size: 0.75rem;
+    background: var(--tblr-bg-surface-dark);
+    color: var(--tblr-light);
+    padding: 1rem;
+    border-radius: var(--tblr-border-radius);
+    margin-top: 1rem;
+}
+
+.import-log-entry {
+    padding: 0.125rem 0;
+}
+
+.import-log-entry.success {
+    color: var(--tblr-success);
+}
+
+.import-log-entry.warning {
+    color: var(--tblr-warning);
+}
+
+.import-log-entry.error {
+    color: var(--tblr-danger);
+}
+
+/* Report Stats */
+.report-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.report-stat {
+    text-align: center;
+    padding: 1.5rem;
+    border-radius: var(--tblr-border-radius);
+}
+
+.report-stat.success {
+    background: var(--tblr-success-lt);
+}
+
+.report-stat.warning {
+    background: var(--tblr-warning-lt);
+}
+
+.report-stat.error {
+    background: var(--tblr-danger-lt);
+}
+
+.report-stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+}
+
+.report-stat.success .report-stat-value {
+    color: var(--tblr-success);
+}
+
+.report-stat.warning .report-stat-value {
+    color: var(--tblr-warning);
+}
+
+.report-stat.error .report-stat-value {
+    color: var(--tblr-danger);
+}
+
+.report-stat-label {
+    font-size: 0.875rem;
+    color: var(--tblr-secondary);
+}
+
+/* --------------------------------------------------------------------------
+   Illustrations
+   -------------------------------------------------------------------------- */
+.illustration {
+    max-width: 120px;
+    height: auto;
+    margin: 0 auto 1rem;
+    opacity: 0.9;
+}
+
+.illustration-large {
+    max-width: 180px;
+}
+
+/* --------------------------------------------------------------------------
+   Empty States
+   -------------------------------------------------------------------------- */
+.empty-state {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: var(--tblr-secondary);
+}
+
+.empty-state-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+/* --------------------------------------------------------------------------
+   Responsive Adjustments
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+    .wizard-steps {
+        gap: 0;
+    }
+    
+    .wizard-step-connector {
+        width: 30px;
+    }
+    
+    .wizard-step-label {
+        display: none;
+    }
+    
+    .start-options {
+        grid-template-columns: 1fr;
+    }
+    
+    .mapping-row {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+    
+    .mapping-arrow {
+        transform: rotate(90deg);
+        justify-self: center;
+    }
+    
+    .report-stats {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Mapping Header Row for Desktop */
+.mapping-header-row {
+    display: grid;
+    grid-template-columns: 40% 40px 1fr 140px;
+    gap: 1rem;
+    padding: 0 1rem 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--tblr-secondary);
+    letter-spacing: 0.04em;
+}
+
+@media (max-width: 768px) {
+    .mapping-header-row {
+        display: none;
+    }
+}
+
+.report-stat.success .report-stat-label {
+    color: var(--tblr-success);
+    font-weight: 600;
+}
+
+.report-stat.warning .report-stat-label {
+    color: var(--tblr-warning);
+    font-weight: 600;
+}
+
+.report-stat.error .report-stat-label {
+    color: var(--tblr-danger);
+    font-weight: 600;
+}
+
+/* Added by AI for alignment */
+.mapping-csv-col { padding-left: 0.5rem; }
