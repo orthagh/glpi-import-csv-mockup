@@ -192,11 +192,11 @@ export class Step4Import {
                                 <i class="ti ti-list me-2"></i>
                                 Import Log
                             </h4>
-                            <div class="input-icon" style="width: 3000px;">
+                            <div class="input-icon" style="width: 300px;">
                                 <span class="input-icon-addon">
                                     <i class="ti ti-search"></i>
                                 </span>
-                                <input type="text" id="log-filter" class="form-control form-control-sm" placeholder="Filter by status, row, or message..." value="${this.searchQuery}">
+                                <input type="text" id="log-filter" class="form-control" placeholder="Filter by status, row, or message..." value="${this.searchQuery}">
                             </div>
                         </div>
                         <div class="import-log" id="import-log" style="max-height: 300px;">
