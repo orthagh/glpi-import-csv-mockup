@@ -25,7 +25,12 @@ class App {
                 delimiter: ',',
                 encoding: 'UTF-8',
                 hasHeader: true,
-                skipRows: 0
+                skipRows: 0,
+                allowCreation: true,
+                allowUpdate: true,
+                isRelation: false,
+                dateFormat: 'Y-m-d',
+                decimalSeparator: '.'
             },
             
             // Step 3

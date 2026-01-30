@@ -95,6 +95,19 @@ export class Step2Upload {
         const delimiters = CsvParser.getDelimiters();
         const encodings = CsvParser.getEncodings();
         
+        const dateFormats = [
+            { value: 'Y-m-d', label: 'YYYY-MM-DD' },
+            { value: 'd-m-Y', label: 'DD-MM-YYYY' },
+            { value: 'm-d-Y', label: 'MM-DD-YYYY' },
+            { value: 'd.m.Y', label: 'DD.MM.YYYY' },
+            { value: 'd/m/Y', label: 'DD/MM/YYYY' }
+        ];
+
+        const decimalSeparators = [
+            { value: '.', label: 'Point (.)' },
+            { value: ',', label: 'Comma (,)' }
+        ];
+        
         return `
             <div class="format-options">
                 <div class="mb-0">
@@ -118,19 +131,64 @@ export class Step2Upload {
                         `).join('')}
                     </select>
                 </div>
-                
+
                 <div class="mb-0">
-                    <label class="form-label">First row is header</label>
-                    <div class="form-check form-switch mt-2">
-                        <input class="form-check-input" type="checkbox" id="opt-header" 
-                            ${options.hasHeader ? 'checked' : ''}>
-                    </div>
+                    <label class="form-label">Date Format</label>
+                    <select class="form-select" id="opt-date-format">
+                        ${dateFormats.map(f => `
+                            <option value="${f.value}" ${options.dateFormat === f.value ? 'selected' : ''}>
+                                ${f.label}
+                            </option>
+                        `).join('')}
+                    </select>
                 </div>
-                
+
+                <div class="mb-0">
+                    <label class="form-label">Decimal Separator</label>
+                    <select class="form-select" id="opt-decimal-separator">
+                        ${decimalSeparators.map(s => `
+                            <option value="${s.value}" ${options.decimalSeparator === s.value ? 'selected' : ''}>
+                                ${s.label}
+                            </option>
+                        `).join('')}
+                    </select>
+                </div>
+
                 <div class="mb-0">
                     <label class="form-label">Skip rows</label>
                     <input type="number" class="form-control" id="opt-skip" 
                         value="${options.skipRows}" min="0" max="100">
+                </div>
+                
+                <div class="mb-0">
+                    <label class="form-label">First row is header</label>
+                    <div class="form-check form-switch mt-3">
+                        <input class="form-check-input" type="checkbox" id="opt-header" 
+                            ${options.hasHeader ? 'checked' : ''}>
+                    </div>
+                </div>
+
+                <div class="mb-0">
+                    <label class="form-label">Import Mode</label>
+                    <div class="form-check form-switch mt-1">
+                        <input class="form-check-input" type="checkbox" id="opt-allow-creation" 
+                            ${options.allowCreation !== false ? 'checked' : ''}>
+                        <label class="form-check-label" for="opt-allow-creation">Creation</label>
+                    </div>
+                    <div class="form-check form-switch mt-1">
+                        <input class="form-check-input" type="checkbox" id="opt-allow-update" 
+                            ${options.allowUpdate !== false ? 'checked' : ''}>
+                        <label class="form-check-label" for="opt-allow-update">Update</label>
+                    </div>
+                </div>
+
+                <div class="mb-0">
+                     <label class="form-label">Related Items</label>
+                     <div class="form-check form-switch mt-2">
+                        <input class="form-check-input" type="checkbox" id="opt-is-relation" 
+                            ${options.isRelation ? 'checked' : ''}>
+                        <label class="form-check-label" for="opt-is-relation">Create if missing</label>
+                    </div>
                 </div>
             </div>
         `;
@@ -339,6 +397,43 @@ export class Step2Upload {
             optSkip.addEventListener('change', (e) => {
                 this.app.state.formatOptions.skipRows = parseInt(e.target.value) || 0;
                 this.reparse();
+            });
+        }
+
+        // New options
+        const optDateFormat = document.getElementById('opt-date-format');
+        const optDecimalSeparator = document.getElementById('opt-decimal-separator');
+        const optAllowCreation = document.getElementById('opt-allow-creation');
+        const optAllowUpdate = document.getElementById('opt-allow-update');
+        const optIsRelation = document.getElementById('opt-is-relation');
+
+        if (optDateFormat) {
+            optDateFormat.addEventListener('change', (e) => {
+                this.app.state.formatOptions.dateFormat = e.target.value;
+            });
+        }
+
+        if (optDecimalSeparator) {
+            optDecimalSeparator.addEventListener('change', (e) => {
+                this.app.state.formatOptions.decimalSeparator = e.target.value;
+            });
+        }
+
+        if (optAllowCreation) {
+            optAllowCreation.addEventListener('change', (e) => {
+                this.app.state.formatOptions.allowCreation = e.target.checked;
+            });
+        }
+
+        if (optAllowUpdate) {
+            optAllowUpdate.addEventListener('change', (e) => {
+                this.app.state.formatOptions.allowUpdate = e.target.checked;
+            });
+        }
+
+        if (optIsRelation) {
+            optIsRelation.addEventListener('change', (e) => {
+                this.app.state.formatOptions.isRelation = e.target.checked;
             });
         }
     }
