@@ -10,6 +10,7 @@ export class Step4Import {
         this.app = app;
         this.isImporting = false;
         this.importComplete = false;
+        this.searchQuery = '';
     }
     
     /**
@@ -123,6 +124,15 @@ export class Step4Import {
                     </div>
                 </div>
                 
+                <div class="import-log-filters mb-2">
+                    <div class="input-icon">
+                        <span class="input-icon-addon">
+                            <i class="ti ti-search"></i>
+                        </span>
+                        <input type="text" id="log-filter" class="form-control" placeholder="Filter by status, row, or message..." value="${this.searchQuery}">
+                    </div>
+                </div>
+                
                 <div class="import-log" id="import-log">
                     <div class="import-log-entry text-muted">Initializing import...</div>
                 </div>
@@ -177,14 +187,22 @@ export class Step4Import {
                 
                 ${results.log.length > 0 ? `
                     <div class="mt-4">
-                        <h4 class="mb-3">
-                            <i class="ti ti-list me-2"></i>
-                            Import Log
-                        </h4>
-                        <div class="import-log" style="max-height: 300px;">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <h4 class="mb-0">
+                                <i class="ti ti-list me-2"></i>
+                                Import Log
+                            </h4>
+                            <div class="input-icon" style="width: 3000px;">
+                                <span class="input-icon-addon">
+                                    <i class="ti ti-search"></i>
+                                </span>
+                                <input type="text" id="log-filter" class="form-control form-control-sm" placeholder="Filter by status, row, or message..." value="${this.searchQuery}">
+                            </div>
+                        </div>
+                        <div class="import-log" id="import-log" style="max-height: 300px;">
                             ${results.log.map(entry => `
                                 <div class="import-log-entry ${entry.type}">
-                                    <span class="text-muted">[Row ${entry.row}]</span> ${this.escapeHtml(entry.message)}
+                                    <span class="log-status">[${entry.type.toUpperCase()}]</span><span class="text-muted">[Row ${entry.row}]</span> ${this.escapeHtml(entry.message)}
                                 </div>
                             `).join('')}
                         </div>
@@ -220,6 +238,36 @@ export class Step4Import {
         if (exportBtn) {
             exportBtn.addEventListener('click', () => this.exportReport());
         }
+        
+        // Log filter input
+        const filterInput = document.getElementById('log-filter');
+        if (filterInput) {
+            filterInput.addEventListener('input', (e) => {
+                this.searchQuery = e.target.value.toLowerCase();
+                this.applyFilter();
+            });
+            // Apply filter immediately after render if searchQuery is set
+            if (this.searchQuery) {
+                this.applyFilter();
+            }
+        }
+    }
+    
+    /**
+     * Apply filter to log entries
+     */
+    applyFilter() {
+        const entries = document.querySelectorAll('.import-log-entry');
+        entries.forEach(entry => {
+            const text = entry.textContent.toLowerCase();
+            const type = entry.className.toLowerCase();
+            
+            if (text.includes(this.searchQuery) || type.includes(this.searchQuery)) {
+                entry.style.display = '';
+            } else {
+                entry.style.display = 'none';
+            }
+        });
     }
     
     /**
@@ -256,7 +304,17 @@ export class Step4Import {
                     if (logContainer && progress.lastLog) {
                         const entry = document.createElement('div');
                         entry.className = `import-log-entry ${progress.lastLog.type}`;
-                        entry.innerHTML = `<span class="text-muted">[Row ${progress.lastLog.row}]</span> ${this.escapeHtml(progress.lastLog.message)}`;
+                        entry.innerHTML = `<span class="log-status">[${progress.lastLog.type.toUpperCase()}]</span><span class="text-muted">[Row ${progress.lastLog.row}]</span> ${this.escapeHtml(progress.lastLog.message)}`;
+                        
+                        // Check if it matches current filter
+                        if (this.searchQuery) {
+                            const text = entry.textContent.toLowerCase();
+                            const type = entry.className.toLowerCase();
+                            if (!text.includes(this.searchQuery) && !type.includes(this.searchQuery)) {
+                                entry.style.display = 'none';
+                            }
+                        }
+                        
                         logContainer.appendChild(entry);
                         logContainer.scrollTop = logContainer.scrollHeight;
                     }

@@ -510,6 +510,21 @@
     color: var(--tblr-danger);
 }
 
+.import-log-filters {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.log-status {
+    display: inline-block;
+    min-width: 70px;
+    font-weight: 700;
+}
+
+.import-log-entry.success .log-status { color: var(--tblr-success); }
+.import-log-entry.warning .log-status { color: var(--tblr-warning); }
+.import-log-entry.error .log-status { color: var(--tblr-danger); }
+
 /* Report Stats */
 .report-stats {
     display: grid;
