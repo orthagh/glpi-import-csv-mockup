@@ -10,6 +10,10 @@ export class Step3Mapping {
         this.app = app;
         this.types = [];
         this.searchOptions = [];
+        // Ensure static mappings are initialized
+        if (!this.app.state.staticMappings) {
+            this.app.state.staticMappings = [];
+        }
     }
     
     /**
@@ -133,6 +137,64 @@ export class Step3Mapping {
                 </div>
                 
                 ${mappings.map((mapping, index) => this.renderMappingRow(mapping, index)).join('')}
+                
+                ${(this.app.state.staticMappings || []).map((mapping, index) => this.renderStaticFieldRow(mapping, index)).join('')}
+                
+                <div class="mt-3 mb-2 text-end">
+                    <button class="btn btn-outline-secondary" id="add-static-field">
+                        <i class="ti ti-plus"></i>
+                        Add static field
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    /**
+     * Render a single static field row
+     * @param {Object} mapping
+     * @param {number} index
+     * @returns {string}
+     */
+    renderStaticFieldRow(mapping, index) {
+        return `
+            <div class="mapping-row" style="background-color: var(--tblr-body-bg); border-left: 3px solid var(--tblr-secondary);">
+                <div class="mapping-csv-col ms-3">
+                     <div class="input-icon">
+                        <span class="input-icon-addon">
+                          <i class="ti ti-quote"></i>
+                        </span>
+                        <input type="text" class="form-control" 
+                            placeholder="Static Value" 
+                            value="${this.escapeHtml(mapping.value)}"
+                            data-static-value-index="${index}">
+                     </div>
+                </div>
+                
+                <div class="mapping-arrow text-center">
+                    <i class="ti ti-arrow-right text-muted"></i>
+                </div>
+                
+                <div class="mapping-glpi-field">
+                    <select class="form-select" data-static-field-index="${index}">
+                        <option value="">Select GLPI field...</option>
+                        ${this.searchOptions.map(opt => `
+                            <option value="${opt.id}" 
+                                ${mapping.glpiField == opt.id ? 'selected' : ''}
+                                ${this.isFieldAlreadyMapped(opt.id, -1, index) ? 'disabled' : ''}>
+                                ${opt.name}
+                            </option>
+                        `).join('')}
+                    </select>
+                </div>
+                
+                <div class="mapping-actions d-flex align-items-center gap-2">
+                    <button class="btn btn-ghost-danger btn-icon" 
+                        data-remove-static="${index}"
+                        title="Remove static field">
+                        <i class="ti ti-trash"></i>
+                    </button>
+                </div>
             </div>
         `;
     }
@@ -161,7 +223,7 @@ export class Step3Mapping {
                         ${this.searchOptions.map(opt => `
                             <option value="${opt.id}" 
                                 ${mapping.glpiField === opt.id ? 'selected' : ''}
-                                ${this.isFieldAlreadyMapped(opt.id, index) ? 'disabled' : ''}>
+                                ${this.isFieldAlreadyMapped(opt.id, index, -1) ? 'disabled' : ''}>
                                 ${opt.name}
                             </option>
                         `).join('')}
@@ -300,7 +362,8 @@ export class Step3Mapping {
                         csvHeader: m.csvHeader,
                         glpiField: m.glpiField,
                         isReconciliationKey: m.isReconciliationKey
-                    }))
+                    })),
+                    staticMappings: this.app.state.staticMappings || []
                 };
 
                 if (action === 'update' && this.app.state.selectedTemplate) {
@@ -329,18 +392,67 @@ export class Step3Mapping {
                 }, 2000);
             });
         }
+
+        // Static fields events
+        const addStaticBtn = document.getElementById('add-static-field');
+        if (addStaticBtn) {
+            addStaticBtn.addEventListener('click', () => {
+                if (!this.app.state.staticMappings) {
+                    this.app.state.staticMappings = [];
+                }
+                this.app.state.staticMappings.push({
+                    id: Date.now(),
+                    glpiField: null,
+                    value: ''
+                });
+                this.render();
+            });
+        }
+
+        container.querySelectorAll('[data-static-field-index]').forEach(select => {
+            select.addEventListener('change', (e) => {
+                const index = parseInt(e.target.dataset.staticFieldIndex);
+                const value = e.target.value ? parseInt(e.target.value) : null;
+                this.app.state.staticMappings[index].glpiField = value;
+                this.render();
+            });
+        });
+
+        container.querySelectorAll('[data-static-value-index]').forEach(input => {
+            input.addEventListener('input', (e) => {
+                const index = parseInt(e.target.dataset.staticValueIndex);
+                this.app.state.staticMappings[index].value = e.target.value;
+            });
+        });
+
+        container.querySelectorAll('[data-remove-static]').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const index = parseInt(e.currentTarget.dataset.removeStatic);
+                this.app.state.staticMappings.splice(index, 1);
+                this.render();
+            });
+        });
     }
     
     /**
      * Check if a GLPI field is already mapped
      * @param {number} fieldId
-     * @param {number} excludeIndex
+     * @param {number} excludeMappingIndex - Index to exclude in csv mappings (-1 if check from static)
+     * @param {number} excludeStaticIndex - Index to exclude in static mappings (-1 if check from mapping)
      * @returns {boolean}
      */
-    isFieldAlreadyMapped(fieldId, excludeIndex) {
-        return this.app.state.mappings.some(
-            (m, i) => i !== excludeIndex && m.glpiField === fieldId
+    isFieldAlreadyMapped(fieldId, excludeMappingIndex = -1, excludeStaticIndex = -1) {
+        // Check in CSV mappings
+        const inMappings = this.app.state.mappings.some(
+            (m, i) => i !== excludeMappingIndex && m.glpiField == fieldId
         );
+        
+        // Check in static mappings
+        const inStatic = (this.app.state.staticMappings || []).some(
+            (m, i) => i !== excludeStaticIndex && m.glpiField == fieldId
+        );
+        
+        return inMappings || inStatic;
     }
     
     /**
@@ -361,7 +473,7 @@ export class Step3Mapping {
                        optName.includes(headerLower);
             });
             
-            if (match && !this.isFieldAlreadyMapped(match.id, -1)) {
+            if (match && !this.isFieldAlreadyMapped(match.id, -1, -1)) {
                 mapping.glpiField = match.id;
             }
         });

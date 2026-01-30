@@ -36,6 +36,7 @@ class App {
             // Step 3
             glpiType: null,
             mappings: [],
+            staticMappings: [],
             
             // Step 4
             importResults: null

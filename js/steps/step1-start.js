@@ -166,6 +166,7 @@ export class Step1Start {
             const template = this.app.state.selectedTemplate;
             this.app.state.glpiType = template.glpiType;
             this.app.state.mappings = [...template.mappings];
+            this.app.state.staticMappings = template.staticMappings ? [...template.staticMappings] : [];
             this.app.templateStore.markUsed(template.id);
         }
         return true;
