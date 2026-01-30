@@ -99,7 +99,10 @@ class App {
                 return this.state.csvData !== null && this.state.csvData.data.length > 0;
             case 3:
                 // Must have at least one mapping and a selected type
-                return this.state.glpiType !== null && this.state.mappings.some(m => m.glpiField);
+                // and at least one reconciliation key
+                return this.state.glpiType !== null && 
+                       this.state.mappings.some(m => m.glpiField) &&
+                       this.state.mappings.some(m => m.isReconciliationKey);
             case 4:
                 // Final step, no next
                 return false;

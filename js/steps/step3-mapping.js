@@ -110,9 +110,17 @@ export class Step3Mapping {
         return `
             <div class="mapping-list">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h4 class="text-dark fs-3">
+                    <h4 class="text-dark fs-3" 
+                        ${!mappings.some(m => m.isReconciliationKey) ? `
+                            data-bs-toggle="tooltip" 
+                            data-bs-placement="right" 
+                            title="Please select at least one reconciliation key to proceed"
+                        ` : ''}>
                         <i class="ti ti-arrows-exchange me-2"></i>
                         Field Mappings
+                        ${!mappings.some(m => m.isReconciliationKey) ? `
+                            <i class="ti ti-alert-circle text-warning fs-5 ms-2"></i>
+                        ` : ''}
                     </h4>
                 </div>
                 
@@ -259,8 +267,14 @@ export class Step3Mapping {
                 
                 mapping.isReconciliationKey = !mapping.isReconciliationKey;
                 this.render();
+                // Ensure buttons and tooltips are refreshed
+                this.app.wizard.refreshButtons();
             });
         });
+
+        // Initialize tooltips
+        const tooltips = container.querySelectorAll('[data-bs-toggle="tooltip"]');
+        tooltips.forEach(t => new bootstrap.Tooltip(t));
         
         // Save template button
         const saveBtn = document.getElementById('save-template');
