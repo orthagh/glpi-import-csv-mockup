@@ -202,7 +202,7 @@ export class Step3Mapping {
                         <div class="col-md-2">
                             <button class="btn btn-outline-secondary w-100" id="save-template" 
                                 data-action="${isEditing ? 'update' : 'create'}">
-                                <i class="ti ${isEditing ? 'ti-check' : 'ti-download'} me-1"></i>
+                                <i class="ti ti-device-floppy me-1"></i>
                                 ${isEditing ? 'Update' : 'Save'}
                             </button>
                         </div>
