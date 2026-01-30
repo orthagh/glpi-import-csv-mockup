@@ -88,6 +88,7 @@ export class Step1Start {
                         </div>
                         <div class="template-item-info">
                             <div class="template-item-name">${this.escapeHtml(t.name)}</div>
+                            ${t.comment ? `<div class="text-muted small mb-1">${this.escapeHtml(t.comment)}</div>` : ''}
                             <div class="template-item-meta">
                                 ${t.glpiType} &bull; ${t.mappings?.length || 0} mappings &bull; 
                                 Last used: ${this.formatDate(t.lastUsedAt)}

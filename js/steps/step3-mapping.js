@@ -179,24 +179,34 @@ export class Step3Mapping {
     renderSaveTemplate() {
         const isEditing = this.app.state.mode === 'template' && this.app.state.selectedTemplate;
         const currentName = isEditing ? this.app.state.selectedTemplate.name : '';
+        const currentComment = isEditing ? (this.app.state.selectedTemplate.comment || '') : '';
         
         return `
             <div class="save-template-form mt-4 pt-4 border-top">
-                <div class="d-flex align-items-end gap-3">
-                    <div class="flex-grow-1">
-                        <label class="form-label">
-                            <i class="ti ti-device-floppy me-1"></i>
-                            ${isEditing ? 'Update Template' : 'Save as Template (optional)'}
-                        </label>
-                        <input type="text" class="form-control" id="template-name" 
-                            value="${this.escapeHtml(currentName)}"
-                            placeholder="Enter template name...">
+                <div class="mb-3">
+                    <label class="form-label">
+                        <i class="ti ti-device-floppy me-1"></i>
+                        ${isEditing ? 'Update Template' : 'Save as Template (optional)'}
+                    </label>
+                    <div class="row g-2">
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" id="template-name" 
+                                value="${this.escapeHtml(currentName)}"
+                                placeholder="Template name...">
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" id="template-comment" 
+                                value="${this.escapeHtml(currentComment)}"
+                                placeholder="Comment (optional)...">
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-outline-secondary w-100" id="save-template" 
+                                data-action="${isEditing ? 'update' : 'create'}">
+                                <i class="ti ${isEditing ? 'ti-check' : 'ti-download'} me-1"></i>
+                                ${isEditing ? 'Update' : 'Save'}
+                            </button>
+                        </div>
                     </div>
-                    <button class="btn ${isEditing ? 'btn-primary' : 'btn-ghost-secondary'}" id="save-template" 
-                        data-action="${isEditing ? 'update' : 'create'}">
-                        <i class="ti ${isEditing ? 'ti-check' : 'ti-download'} me-1"></i>
-                        ${isEditing ? 'Update' : 'Save'}
-                    </button>
                 </div>
             </div>
         `;
@@ -255,10 +265,13 @@ export class Step3Mapping {
         // Save template button
         const saveBtn = document.getElementById('save-template');
         const templateNameInput = document.getElementById('template-name');
+        const templateCommentInput = document.getElementById('template-comment');
         
         if (saveBtn && templateNameInput) {
             saveBtn.addEventListener('click', () => {
                 const name = templateNameInput.value.trim();
+                const comment = templateCommentInput ? templateCommentInput.value.trim() : '';
+                
                 if (!name) {
                     alert('Please enter a template name');
                     return;
@@ -267,6 +280,7 @@ export class Step3Mapping {
                 const action = saveBtn.dataset.action;
                 const templateData = {
                     name: name,
+                    comment: comment,
                     glpiType: this.app.state.glpiType,
                     mappings: this.app.state.mappings.map(m => ({
                         csvHeader: m.csvHeader,
@@ -279,6 +293,7 @@ export class Step3Mapping {
                     this.app.templateStore.update(this.app.state.selectedTemplate.id, templateData);
                     // Update state to reflect changes
                     this.app.state.selectedTemplate.name = name;
+                    this.app.state.selectedTemplate.comment = comment;
                 } else {
                     const newTpl = this.app.templateStore.add(templateData);
                     if (!this.app.state.selectedTemplate) {

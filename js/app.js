@@ -22,7 +22,7 @@ class App {
             file: null,
             csvData: null,
             formatOptions: {
-                delimiter: ',',
+                delimiter: ';',
                 encoding: 'UTF-8',
                 hasHeader: true,
                 skipRows: 0,
