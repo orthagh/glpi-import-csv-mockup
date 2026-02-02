@@ -611,7 +611,7 @@ export class Step2Upload {
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
                             <div class="d-flex align-items-center mb-1">
-                                <i class="ti ti-template me-2 fs-2 text-primary"></i>
+                                <i class="ti ti-file-type-csv me-2 fs-2 text-primary"></i>
                                 <h4 class="card-title mb-0">Using Template: ${this.escapeHtml(template.name)}</h4>
                             </div>
                             <div class="text-muted small">

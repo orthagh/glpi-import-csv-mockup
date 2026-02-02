@@ -19,15 +19,7 @@ export class Step1Start {
             <div class="step-content">
                 <div class="text-center mb-4">
                     <div class="illustration">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
-                            <circle cx="60" cy="60" r="55" fill="#e7f5ff" stroke="#339af0" stroke-width="2"/>
-                            <rect x="35" y="35" width="50" height="60" rx="4" fill="white" stroke="#339af0" stroke-width="2"/>
-                            <line x1="42" y1="50" x2="78" y2="50" stroke="#74c0fc" stroke-width="2" stroke-linecap="round"/>
-                            <line x1="42" y1="58" x2="70" y2="58" stroke="#a5d8ff" stroke-width="2" stroke-linecap="round"/>
-                            <line x1="42" y1="66" x2="75" y2="66" stroke="#a5d8ff" stroke-width="2" stroke-linecap="round"/>
-                            <line x1="42" y1="74" x2="65" y2="74" stroke="#a5d8ff" stroke-width="2" stroke-linecap="round"/>
-                            <path d="M75 25 L85 35 L75 35 Z" fill="#339af0"/>
-                        </svg>
+                        <img src="assets/data-injection.svg" alt="Import CSV" class="img-fluid">
                     </div>
                     <h2 class="display-6 fw-bold mb-3">Import CSV Data</h2>
                     <p class="text-muted">Import data from CSV files into GLPI assets</p>
