@@ -23,7 +23,14 @@ export class Step4Import {
         // Auto-start import if flag is set
         if (this.app.state.autoStartImport && !this.isImporting && !this.importComplete) {
             this.app.state.autoStartImport = false;
-            this.startImport();
+            this.startImport(false);
+            return;
+        }
+
+        // Auto-start dry run if flag is set
+        if (this.app.state.autoStartDryRun && !this.isImporting && !this.importComplete) {
+            this.app.state.autoStartDryRun = false;
+            this.startImport(true);
             return;
         }
         
@@ -173,6 +180,9 @@ export class Step4Import {
                             <i class="ti ti-check me-1"></i>
                             Successful
                         </div>
+                        <div class="mt-2 text-muted small">
+                            ${results.created} Created &bull; ${results.updated} Updated
+                        </div>
                     </div>
                     <div class="report-stat warning">
                         <div class="report-stat-value">${results.warnings}</div>
@@ -207,7 +217,7 @@ export class Step4Import {
                         <div class="import-log" id="import-log" style="max-height: 300px;">
                             ${results.log.map(entry => `
                                 <div class="import-log-entry ${entry.type}">
-                                    <span class="log-status">[${entry.type.toUpperCase()}]</span><span class="text-muted">[Row ${entry.row}]</span> ${this.escapeHtml(entry.message)}
+                                    <span class="log-status">[${entry.type.toUpperCase()}]</span><span class="text-muted">[Row ${entry.row}]</span> ${entry.message}
                                 </div>
                             `).join('')}
                         </div>
@@ -215,7 +225,11 @@ export class Step4Import {
                 ` : ''}
                 
                 <div class="text-center mt-4 d-flex justify-content-center gap-2">
-                    <button class="btn btn-outline-secondary" id="export-report">
+                    <button class="btn btn-ghost-secondary" onclick="window.csvImportApp.reset()">
+                        <i class="ti ti-refresh me-1"></i>
+                        New Import
+                    </button>
+                    <button class="btn ${this.isDryRun ? 'btn-ghost-secondary' : 'btn-primary'}" id="export-report">
                         <i class="ti ti-download me-1"></i>
                         Export Report
                     </button>
@@ -225,10 +239,6 @@ export class Step4Import {
                             Start Real Import
                         </button>
                     ` : ''}
-                    <button class="btn btn-primary" onclick="window.csvImportApp.reset()">
-                        <i class="ti ti-refresh me-1"></i>
-                        New Import
-                    </button>
                 </div>
             </div>
         `;
@@ -330,7 +340,8 @@ export class Step4Import {
                     if (logContainer && progress.lastLog) {
                         const entry = document.createElement('div');
                         entry.className = `import-log-entry ${progress.lastLog.type}`;
-                        entry.innerHTML = `<span class="log-status">[${progress.lastLog.type.toUpperCase()}]</span><span class="text-muted">[Row ${progress.lastLog.row}]</span> ${this.escapeHtml(progress.lastLog.message)}`;
+                        entry.innerHTML = `<span class="log-status">[${progress.lastLog.type.toUpperCase()}]</span><span class="text-muted">[Row ${progress.lastLog.row}]</span> ${progress.lastLog.message}`;
+                        
                         
                         // Check if it matches current filter
                         if (this.searchQuery) {

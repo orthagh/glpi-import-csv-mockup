@@ -66,6 +66,8 @@ export class MockGlpi {
         
         const results = {
             success: 0,
+            created: 0,
+            updated: 0,
             warnings: 0,
             errors: 0,
             log: [],
@@ -83,14 +85,40 @@ export class MockGlpi {
             
             if (outcome > 0.15) {
                 // Success (85% of the time)
+                // Randomly decide if created or updated (50/50 for now)
+                const isUpdate = Math.random() > 0.5;
+                const itemName = row[0] || 'Item ' + (i + 1);
+                // Simple escape for the name
+                const escapedName = String(itemName)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#039;');
+                
+                const linkedName = `<a href="#" class="fw-bold" style="color: inherit;">${escapedName}</a>`;
+
+                if (isUpdate) {
+                    results.updated++;
+                    results.log.push({
+                        type: 'success',
+                        row: i + 1,
+                        message: dryRun 
+                            ? `[Dry Run] Would update ${glpiType}: ${linkedName}`
+                            : `Updated ${glpiType}: ${linkedName}`
+                    });
+                } else {
+                    results.created++;
+                    results.log.push({
+                        type: 'success',
+                        row: i + 1,
+                        message: dryRun 
+                            ? `[Dry Run] Would create ${glpiType}: ${linkedName}`
+                            : `Created ${glpiType}: ${linkedName}`
+                    });
+                }
+                
                 results.success++;
-                results.log.push({
-                    type: 'success',
-                    row: i + 1,
-                    message: dryRun 
-                        ? `[Dry Run] Would create ${glpiType}: ${row[0] || 'Item ' + (i + 1)}`
-                        : `Created ${glpiType}: ${row[0] || 'Item ' + (i + 1)}`
-                });
             } else if (outcome > 0.05) {
                 // Warning (10% of the time)
                 results.warnings++;

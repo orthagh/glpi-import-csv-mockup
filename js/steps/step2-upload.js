@@ -279,6 +279,10 @@ export class Step2Upload {
                         </div>
                         <div class="ms-3">
                             ${canFastTrack ? `
+                                <button class="btn btn-outline-primary me-2" id="btn-fast-track-dry-run">
+                                    <i class="ti ti-test-pipe me-1"></i>
+                                    Dry Run
+                                </button>
                                 <button class="btn btn-primary" id="btn-fast-track">
                                     <i class="ti ti-player-play me-1"></i>
                                     Import Now
@@ -315,6 +319,14 @@ export class Step2Upload {
             if (fastTrackBtn) {
                 fastTrackBtn.addEventListener('click', () => {
                     this.app.state.autoStartImport = true;
+                    this.app.wizard.goToStep(4);
+                });
+            }
+
+            const fastTrackDryRunBtn = document.getElementById('btn-fast-track-dry-run');
+            if (fastTrackDryRunBtn) {
+                fastTrackDryRunBtn.addEventListener('click', () => {
+                    this.app.state.autoStartDryRun = true;
                     this.app.wizard.goToStep(4);
                 });
             }
