@@ -77,11 +77,20 @@ export class Step1Start {
                 </div>
             `;
         }
+
+        // Sort by last used (descending)
+        const sortedTemplates = [...templates].sort((a, b) => {
+            return new Date(b.lastUsedAt) - new Date(a.lastUsedAt);
+        });
+
+        // Limit to top 5
+        const displayTemplates = sortedTemplates.slice(0, 5);
+        const hasMore = sortedTemplates.length > 5;
         
         return `
             <div class="template-list">
-                <h4 class="mb-3">Saved Templates</h4>
-                ${templates.map(t => `
+                <h4 class="mb-3">Last 5 Used Templates</h4>
+                ${displayTemplates.map(t => `
                     <div class="template-item ${this.app.state.selectedTemplate?.id === t.id ? 'selected' : ''}" data-template-id="${t.id}">
                         <div class="template-item-icon">
                             <i class="ti ti-file-import"></i>
@@ -101,6 +110,14 @@ export class Step1Start {
                         </div>
                     </div>
                 `).join('')}
+                
+                ${hasMore ? `
+                    <div class="text-center mt-3">
+                        <button class="btn btn-outline-secondary" onclick="alert('Not implemented in prototype')">
+                            View all templates
+                        </button>
+                    </div>
+                ` : ''}
             </div>
         `;
     }
