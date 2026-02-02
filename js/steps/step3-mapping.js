@@ -119,30 +119,32 @@ export class Step3Mapping {
      */
     renderMappingList() {
         const mappings = this.app.state.mappings;
+        const hasReconciliation = mappings.some(m => m.isReconciliationKey);
         
         return `
             <div class="mapping-list">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h4 class="text-dark fs-3" 
-                        ${!mappings.some(m => m.isReconciliationKey) ? `
-                            data-bs-toggle="tooltip" 
-                            data-bs-placement="right" 
-                            title="Please select at least one reconciliation key to proceed"
-                        ` : ''}>
+                    <h4 class="text-dark fs-3">
                         <i class="ti ti-arrows-exchange me-2"></i>
                         Field Mappings
-                        ${!mappings.some(m => m.isReconciliationKey) ? `
-                            <i class="ti ti-alert-circle text-warning fs-5 ms-2"></i>
-                        ` : ''}
                     </h4>
                 </div>
                 
                 <!-- Header Row -->
                 <div class="mapping-header-row">
-                    <div>CSV Column</div>
+                    <div class='ps-2'>CSV Column</div>
                     <div></div>
                     <div>GLPI Field</div>
-                    <div></div>
+                    <div class="px-3">
+                         ${!hasReconciliation ? `
+                            <span class="text-danger cursor-help" 
+                                  data-bs-toggle="tooltip" 
+                                  data-bs-placement="left" 
+                                  title="Please select at least one reconciliation key to proceed">
+                                <i class="ti ti-alert-triangle ps-2"></i>
+                            </span>
+                        ` : ''}
+                    </div>
                 </div>
                 
                 ${mappings.map((mapping, index) => this.renderMappingRow(mapping, index)).join('')}
@@ -215,6 +217,16 @@ export class Step3Mapping {
      * @returns {string}
      */
     renderMappingRow(mapping, index) {
+        // Check if any key is selected globally to determine button style
+        const anyKeySelected = this.app.state.mappings.some(m => m.isReconciliationKey);
+        let btnClass = 'btn-ghost-secondary';
+        
+        if (mapping.isReconciliationKey) {
+            btnClass = 'btn-primary';
+        } else if (!anyKeySelected) {
+            btnClass = 'btn-ghost-danger';
+        }
+
         return `
             <div class="mapping-row">
                 <div class="mapping-csv-col text-muted ms-3">
@@ -240,7 +252,7 @@ export class Step3Mapping {
                 </div>
                 
                 <div class="mapping-actions d-flex align-items-center gap-2">
-                    <button class="btn btn-icon p-2 ${mapping.isReconciliationKey ? 'btn-primary' : 'btn-ghost-secondary'}" 
+                    <button class="btn btn-icon p-2 ${btnClass}" 
                         data-toggle-key="${index}" 
                         data-bs-toggle="tooltip" 
                         title="${mapping.isReconciliationKey ? 'Used as reconciliation key' : 'Click to use as reconciliation key'}">
@@ -486,6 +498,14 @@ export class Step3Mapping {
                 mapping.glpiField = match.id;
             }
         });
+
+        // Default reconciliation key: select first mapped field if none selected
+        if (!this.app.state.mappings.some(m => m.isReconciliationKey)) {
+            const firstMapped = this.app.state.mappings.find(m => m.glpiField !== null);
+            if (firstMapped) {
+                firstMapped.isReconciliationKey = true;
+            }
+        }
     }
     
     /**

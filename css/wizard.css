@@ -404,7 +404,7 @@
 .mapping-list {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.1rem;
 }
 
 .mapping-row {
@@ -412,7 +412,7 @@
     grid-template-columns: 40% 40px 1fr 50px;
     gap: 1rem;
     align-items: center;
-    padding: 0.75rem 1rem;
+    padding: 0.4rem .1rem;
     background: var(--tblr-bg-surface-secondary);
     border-radius: var(--tblr-border-radius);
     border: 1px solid transparent;
@@ -430,7 +430,6 @@
 .mapping-csv-col {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
     font-family: var(--tblr-font-monospace);
     font-size: 0.875rem;
 }
@@ -644,7 +643,7 @@
     display: grid;
     grid-template-columns: 40% 40px 1fr 50px;
     gap: 1rem;
-    padding: 0 1rem 0.5rem;
+    padding: 0 1rem;
     margin-bottom: 0.5rem;
     font-size: 0.75rem;
     font-weight: 600;
