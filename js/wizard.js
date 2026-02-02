@@ -147,6 +147,12 @@ export class Wizard {
         // Next button
         const footer = document.querySelector('.card-footer');
         
+        if (this.currentStep === 1) {
+            this.btnNext.style.display = 'none';
+        } else {
+            this.btnNext.style.display = '';
+        }
+
         if (this.currentStep === this.totalSteps) {
             // Hide footer on last step (Step 4 handles its own navigation)
             if (footer) footer.classList.add('d-none');

@@ -119,6 +119,11 @@ export class Step1Start {
                 this.app.state.selectedTemplate = null;
                 this.render();
                 this.app.wizard.refreshButtons();
+                
+                // Auto advance
+                if (mode === 'new') {
+                    this.app.wizard.nextStep();
+                }
             });
         });
         
@@ -135,6 +140,9 @@ export class Step1Start {
                     this.app.state.selectedTemplate = template;
                     this.render();
                     this.app.wizard.refreshButtons();
+                    
+                    // Auto advance
+                    this.app.wizard.nextStep();
                 }
             });
         });
