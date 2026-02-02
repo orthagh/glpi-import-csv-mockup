@@ -21,6 +21,15 @@ export class Step3Mapping {
      */
     async render() {
         const container = document.getElementById('wizard-content');
+
+        // Dispose of any existing tooltips before re-rendering to prevent ghosts
+        const existingTooltips = container.querySelectorAll('[data-bs-toggle="tooltip"]');
+        existingTooltips.forEach(el => {
+            const tooltip = bootstrap.Tooltip.getInstance(el);
+            if (tooltip) {
+                tooltip.dispose();
+            }
+        });
         
         // Load types
         this.types = await MockGlpi.getTypes();
