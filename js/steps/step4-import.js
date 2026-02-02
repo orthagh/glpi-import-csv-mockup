@@ -174,7 +174,7 @@ export class Step4Import {
                 </div>
                 
                 <div class="report-stats">
-                    <div class="report-stat success">
+                    <div class="report-stat success" data-status="success" style="cursor: pointer">
                         <div class="report-stat-value">${results.success}</div>
                         <div class="report-stat-label">
                             <i class="ti ti-check me-1"></i>
@@ -184,14 +184,14 @@ export class Step4Import {
                             ${results.created} Created &bull; ${results.updated} Updated
                         </div>
                     </div>
-                    <div class="report-stat warning">
+                    <div class="report-stat warning" data-status="warning" style="cursor: pointer">
                         <div class="report-stat-value">${results.warnings}</div>
                         <div class="report-stat-label">
                             <i class="ti ti-alert-triangle me-1"></i>
                             Warnings
                         </div>
                     </div>
-                    <div class="report-stat error">
+                    <div class="report-stat error" data-status="error" style="cursor: pointer">
                         <div class="report-stat-value">${results.errors}</div>
                         <div class="report-stat-label">
                             <i class="ti ti-x me-1"></i>
@@ -279,11 +279,27 @@ export class Step4Import {
                 this.searchQuery = e.target.value.toLowerCase();
                 this.applyFilter();
             });
-            // Apply filter immediately after render if searchQuery is set
             if (this.searchQuery) {
                 this.applyFilter();
             }
         }
+
+        // Summary cards filter
+        const summaryCards = document.querySelectorAll('.report-stat[data-status]');
+        summaryCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const status = card.dataset.status;
+                const filterInput = document.getElementById('log-filter');
+                if (filterInput) {
+                    filterInput.value = status;
+                    // Trigger input event to update everything
+                    filterInput.dispatchEvent(new Event('input'));
+                    
+                    // Scroll to logs
+                    document.querySelector('.import-log')?.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
     }
     
     /**
