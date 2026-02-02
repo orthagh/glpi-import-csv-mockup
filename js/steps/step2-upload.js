@@ -24,6 +24,8 @@ export class Step2Upload {
                     <p class="text-muted">Select a CSV file to import and configure parsing options</p>
                 </div>
                 
+                ${this.renderTemplateDownload()}
+                
                 ${!hasFile ? this.renderDropzone() : this.renderFileInfo()}
                 
                 ${hasFile && this.app.state.mode !== 'template' ? this.renderFormatOptions() : ''}
@@ -323,6 +325,13 @@ export class Step2Upload {
                 });
             }
 
+            const downloadExampleBtn = document.getElementById('btn-download-example');
+            if (downloadExampleBtn) {
+                downloadExampleBtn.addEventListener('click', () => {
+                    this.downloadTemplateExample();
+                });
+            }
+
             const fastTrackDryRunBtn = document.getElementById('btn-fast-track-dry-run');
             if (fastTrackDryRunBtn) {
                 fastTrackDryRunBtn.addEventListener('click', () => {
@@ -567,6 +576,76 @@ export class Step2Upload {
         
         // Fast track possible if all previously mapped fields are found
         this.canFastTrack = totalMapped > 0 && matchedCount === totalMapped;
+    }
+
+    /**
+     * Render template download option
+     * @returns {string}
+     */
+    renderTemplateDownload() {
+        if (this.app.state.mode !== 'template' || !this.app.state.selectedTemplate) {
+            return '';
+        }
+
+        const template = this.app.state.selectedTemplate;
+        
+        return `
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <h4 class="card-title mb-1">Using Template: ${this.escapeHtml(template.name)}</h4>
+                            <div class="text-muted small">
+                                This template expects specific columns. Download an example file to get started.
+                            </div>
+                        </div>
+                        <button class="btn btn-outline-primary" id="btn-download-example">
+                            <i class="ti ti-download me-2"></i>
+                            Download Example CSV
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    /**
+     * Download example CSV based on template mappings
+     */
+    downloadTemplateExample() {
+        const template = this.app.state.selectedTemplate;
+        const delimiter = this.app.state.formatOptions.delimiter || ';';
+        
+        if (!template || !template.mappings) return;
+
+        // Extract headers from mappings
+        // Filter out any mappings that might not have a CSV header (though they should)
+        const headers = template.mappings
+            .map(m => m.csvHeader)
+            .filter(h => h);
+            
+        if (headers.length === 0) {
+            alert('This template has no mapped columns.');
+            return;
+        }
+
+        // Create CSV content
+        // Quote headers if they contain the delimiter or quotes
+        const csvContent = headers.map(h => {
+            if (h.includes(delimiter) || h.includes('"') || h.includes('\n')) {
+                return `"${h.replace(/"/g, '""')}"`;
+            }
+            return h;
+        }).join(delimiter);
+
+        // Download file
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `${template.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_example.csv`;
+        link.click();
+        URL.revokeObjectURL(url);
     }
 
     /**
