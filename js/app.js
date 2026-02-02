@@ -28,7 +28,9 @@ class App {
                 skipRows: 0,
                 allowCreation: true,
                 allowUpdate: true,
-                isRelation: false,
+                overwrite: true,
+                appendMultiline: false,
+                isRelation: true,
                 dateFormat: 'Y-m-d',
                 decimalSeparator: '.'
             },

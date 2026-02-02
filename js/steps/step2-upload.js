@@ -114,86 +114,153 @@ export class Step2Upload {
         
         return `
             <div class="format-options">
-                <div class="mb-0">
-                    <label class="form-label">Delimiter</label>
-                    <select class="form-select" id="opt-delimiter">
-                        ${delimiters.map(d => `
-                            <option value="${d.value}" ${options.delimiter === d.value ? 'selected' : ''}>
-                                ${d.label}
-                            </option>
-                        `).join('')}
-                    </select>
-                </div>
-                
-                <div class="mb-0">
-                    <label class="form-label">Encoding</label>
-                    <select class="form-select" id="opt-encoding">
-                        ${encodings.map(e => `
-                            <option value="${e.value}" ${options.encoding === e.value ? 'selected' : ''}>
-                                ${e.label}
-                            </option>
-                        `).join('')}
-                    </select>
-                </div>
-
-                <div class="mb-0">
-                    <label class="form-label">Date Format</label>
-                    <select class="form-select" id="opt-date-format">
-                        ${dateFormats.map(f => `
-                            <option value="${f.value}" ${options.dateFormat === f.value ? 'selected' : ''}>
-                                ${f.label}
-                            </option>
-                        `).join('')}
-                    </select>
-                </div>
-
-                <div class="mb-0">
-                    <label class="form-label">Decimal Separator</label>
-                    <select class="form-select" id="opt-decimal-separator">
-                        ${decimalSeparators.map(s => `
-                            <option value="${s.value}" ${options.decimalSeparator === s.value ? 'selected' : ''}>
-                                ${s.label}
-                            </option>
-                        `).join('')}
-                    </select>
-                </div>
-
-                <div class="mb-0">
-                    <label class="form-label">Skip rows</label>
-                    <input type="number" class="form-control" id="opt-skip" 
-                        value="${options.skipRows}" min="0" max="100">
-                </div>
-                
-                <div class="mb-0">
-                    <label class="form-label">First row is header</label>
-                    <div class="form-check form-switch mt-3">
-                        <input class="form-check-input" type="checkbox" id="opt-header" 
-                            ${options.hasHeader ? 'checked' : ''}>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Delimiter</label>
+                            <select class="form-select" id="opt-delimiter">
+                                ${delimiters.map(d => `
+                                    <option value="${d.value}" ${options.delimiter === d.value ? 'selected' : ''}>
+                                        ${d.label}
+                                    </option>
+                                `).join('')}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Encoding</label>
+                            <select class="form-select" id="opt-encoding">
+                                ${encodings.map(e => `
+                                    <option value="${e.value}" ${options.encoding === e.value ? 'selected' : ''}>
+                                        ${e.label}
+                                    </option>
+                                `).join('')}
+                            </select>
+                        </div>
                     </div>
                 </div>
 
-                <div class="mb-0">
-                    <label class="form-label">Import Mode</label>
-                    <div class="form-check form-switch mt-1">
-                        <input class="form-check-input" type="checkbox" id="opt-allow-creation" 
-                            ${options.allowCreation !== false ? 'checked' : ''}>
-                        <label class="form-check-label" for="opt-allow-creation">Creation</label>
-                    </div>
-                    <div class="form-check form-switch mt-1">
-                        <input class="form-check-input" type="checkbox" id="opt-allow-update" 
-                            ${options.allowUpdate !== false ? 'checked' : ''}>
-                        <label class="form-check-label" for="opt-allow-update">Update</label>
-                    </div>
-                </div>
+                <details ${this.app.state.isAdvancedOptionsOpen ? 'open' : ''}>
+                    <summary class="text-primary cursor-pointer mb-3 user-select-none">
+                        <span class="d-inline-flex align-items-center bg-primary-lt px-2 py-1 rounded">
+                            <i class="ti ti-adjustments-horizontal me-2"></i>
+                            Advanced Options
+                        </span>
+                    </summary>
+                    
+                    <div class="mt-2">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Skip rows</label>
+                                    <input type="number" class="form-control" id="opt-skip" 
+                                        value="${options.skipRows}" min="0" max="100">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">First row is header</label>
+                                    <div class="form-check form-switch mt-3">
+                                        <input class="form-check-input" type="checkbox" id="opt-header" 
+                                            ${options.hasHeader ? 'checked' : ''}>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                <div class="mb-0">
-                     <label class="form-label">Related Items</label>
-                     <div class="form-check form-switch mt-2">
-                        <input class="form-check-input" type="checkbox" id="opt-is-relation" 
-                            ${options.isRelation ? 'checked' : ''}>
-                        <label class="form-check-label" for="opt-is-relation">Create if missing</label>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Date Format</label>
+                                    <select class="form-select" id="opt-date-format">
+                                        ${dateFormats.map(f => `
+                                            <option value="${f.value}" ${options.dateFormat === f.value ? 'selected' : ''}>
+                                                ${f.label}
+                                            </option>
+                                        `).join('')}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Decimal Separator</label>
+                                    <select class="form-select" id="opt-decimal-separator">
+                                        ${decimalSeparators.map(s => `
+                                            <option value="${s.value}" ${options.decimalSeparator === s.value ? 'selected' : ''}>
+                                                ${s.label}
+                                            </option>
+                                        `).join('')}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="mb-0">
+                                    <label class="form-label">Import Mode</label>
+                                    
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <!-- Creation Actions -->
+                                            <div class="form-check form-switch mt-1">
+                                                <input class="form-check-input" type="checkbox" id="opt-allow-creation" 
+                                                    ${options.allowCreation !== false ? 'checked' : ''}>
+                                                <label class="form-check-label" for="opt-allow-creation">Create lines</label>
+                                            </div>
+
+                                            <!-- Update Actions -->
+                                            <div class="form-check form-switch mt-1">
+                                                <input class="form-check-input" type="checkbox" id="opt-allow-update" 
+                                                    ${options.allowUpdate !== false ? 'checked' : ''}>
+                                                <label class="form-check-label" for="opt-allow-update">Update lines</label>
+                                            </div>
+
+                                            <!-- Sub-options for Update -->
+                                            <div class="ms-4 border-start ps-3 mt-2">
+                                                <div class="form-check form-switch mt-1">
+                                                    <input class="form-check-input" type="checkbox" id="opt-overwrite" 
+                                                        ${options.overwrite !== false ? 'checked' : ''}
+                                                        ${options.allowUpdate === false ? 'disabled' : ''}>
+                                                    <label class="form-check-label" for="opt-overwrite">
+                                                        Overwrite
+                                                        <i class="ti ti-info-circle ms-1 text-muted" data-bs-toggle="tooltip" 
+                                                           data-bs-title="If enabled, existing values will be replaced. If disabled, only empty values will be filled."></i>
+                                                    </label>
+                                                </div>
+
+                                                <div class="form-check form-switch mt-2">
+                                                    <input class="form-check-input" type="checkbox" id="opt-append-multiline" 
+                                                        ${options.appendMultiline ? 'checked' : ''}
+                                                        ${options.allowUpdate === false ? 'disabled' : ''}>
+                                                    <label class="form-check-label" for="opt-append-multiline">
+                                                        Append multlines
+                                                        <i class="ti ti-info-circle ms-1 text-muted" data-bs-toggle="tooltip" 
+                                                           data-bs-title="For multiline fields (e.g. Comments), append data instead of replacing it."></i>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <!-- Relation Actions -->
+                                            <div class="form-check form-switch mt-1">
+                                                <input class="form-check-input" type="checkbox" id="opt-is-relation" 
+                                                    ${options.isRelation ? 'checked' : ''}>
+                                                <label class="form-check-label" for="opt-is-relation">
+                                                    Import relations
+                                                    <i class="ti ti-info-circle ms-1 text-muted" data-bs-toggle="tooltip" 
+                                                       data-bs-title="Create related items (e.g. Location, User) if they don't exist"></i>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                </details>
             </div>
         `;
     }
@@ -442,6 +509,8 @@ export class Step2Upload {
         const optDecimalSeparator = document.getElementById('opt-decimal-separator');
         const optAllowCreation = document.getElementById('opt-allow-creation');
         const optAllowUpdate = document.getElementById('opt-allow-update');
+        const optOverwrite = document.getElementById('opt-overwrite');
+        const optAppendMultiline = document.getElementById('opt-append-multiline');
         const optIsRelation = document.getElementById('opt-is-relation');
 
         if (optDateFormat) {
@@ -464,7 +533,30 @@ export class Step2Upload {
 
         if (optAllowUpdate) {
             optAllowUpdate.addEventListener('change', (e) => {
-                this.app.state.formatOptions.allowUpdate = e.target.checked;
+                const isChecked = e.target.checked;
+                this.app.state.formatOptions.allowUpdate = isChecked;
+                
+                // Toggle overwrite disabled state
+                if (optOverwrite) {
+                    optOverwrite.disabled = !isChecked;
+                }
+
+                // Toggle append multiline disabled state
+                if (optAppendMultiline) {
+                    optAppendMultiline.disabled = !isChecked;
+                }
+            });
+        }
+
+        if (optOverwrite) {
+            optOverwrite.addEventListener('change', (e) => {
+                this.app.state.formatOptions.overwrite = e.target.checked;
+            });
+        }
+
+        if (optAppendMultiline) {
+            optAppendMultiline.addEventListener('change', (e) => {
+                this.app.state.formatOptions.appendMultiline = e.target.checked;
             });
         }
 
@@ -472,6 +564,20 @@ export class Step2Upload {
             optIsRelation.addEventListener('change', (e) => {
                 this.app.state.formatOptions.isRelation = e.target.checked;
             });
+        }
+
+        // Persist details state
+        const details = container.querySelector('details');
+        if (details) {
+            details.addEventListener('toggle', (e) => {
+                this.app.state.isAdvancedOptionsOpen = e.target.open;
+            });
+        }
+
+        // Initialize tooltips
+        const tooltips = container.querySelectorAll('[data-bs-toggle="tooltip"]');
+        if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+            tooltips.forEach(el => new bootstrap.Tooltip(el));
         }
     }
     
