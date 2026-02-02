@@ -26,6 +26,8 @@ export class Step2Upload {
                 
                 ${this.renderTemplateDownload()}
                 
+                ${this.renderApiHint()}
+                
                 ${!hasFile ? this.renderDropzone() : this.renderFileInfo()}
                 
                 ${hasFile && this.app.state.mode !== 'template' ? this.renderFormatOptions() : ''}
@@ -317,6 +319,20 @@ export class Step2Upload {
     bindEvents() {
         // Fast track button
         setTimeout(() => {
+            const showApiBtn = document.getElementById('btn-show-api');
+            if (showApiBtn) {
+                showApiBtn.addEventListener('click', () => {
+                    const container = document.getElementById('api-snippet-container');
+                    if (container) {
+                        container.classList.toggle('d-none');
+                        const isHidden = container.classList.contains('d-none');
+                        showApiBtn.innerHTML = isHidden 
+                            ? '<i class="ti ti-code me-2"></i>Show Snippet' 
+                            : '<i class="ti ti-code-off me-2"></i>Hide Snippet';
+                    }
+                });
+            }
+
             const fastTrackBtn = document.getElementById('btn-fast-track');
             if (fastTrackBtn) {
                 fastTrackBtn.addEventListener('click', () => {
@@ -583,7 +599,7 @@ export class Step2Upload {
      * @returns {string}
      */
     renderTemplateDownload() {
-        if (this.app.state.mode !== 'template' || !this.app.state.selectedTemplate) {
+        if (this.app.state.mode !== 'template' || !this.app.state.selectedTemplate || this.app.state.file) {
             return '';
         }
 
@@ -594,7 +610,10 @@ export class Step2Upload {
                 <div class="card-body">
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
-                            <h4 class="card-title mb-1">Using Template: ${this.escapeHtml(template.name)}</h4>
+                            <div class="d-flex align-items-center mb-1">
+                                <i class="ti ti-template me-2 fs-2 text-primary"></i>
+                                <h4 class="card-title mb-0">Using Template: ${this.escapeHtml(template.name)}</h4>
+                            </div>
                             <div class="text-muted small">
                                 This template expects specific columns. Download an example file to get started.
                             </div>
@@ -646,6 +665,71 @@ export class Step2Upload {
         link.download = `${template.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_example.csv`;
         link.click();
         URL.revokeObjectURL(url);
+    }
+
+    /**
+     * Render API hint
+     * @returns {string}
+     */
+    renderApiHint() {
+        if (this.app.state.mode !== 'template' || !this.app.state.selectedTemplate || this.app.state.file) {
+            return '';
+        }
+
+        const template = this.app.state.selectedTemplate;
+        const type = this.escapeHtml(template.glpiType || 'Computer');
+        
+        // Syntax highlighting styles (Monokai-ish)
+        const s = {
+            cmd: 'color: #66d9ef; font-weight: bold;', // Blue
+            flag: 'color: #f92672;',                   // Pink
+            str: 'color: #e6db74;',                    // Yellow
+            kw: 'color: #ae81ff;',                     // Purple
+            base: 'color: #f8f8f2;'                    // White-ish
+        };
+        
+        return `
+            <div class="card mb-4" id="api-hint-card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <div class="d-flex align-items-center mb-1">
+                                <i class="ti ti-api me-2 fs-2 text-primary"></i>
+                                <h4 class="card-title mb-0">API Usage</h4>
+                            </div>
+                            <div class="text-muted small">
+                                Automate your imports using this template via the API.
+                            </div>
+                        </div>
+                        <button class="btn btn-outline-primary" id="btn-show-api">
+                            <i class="ti ti-code me-2"></i>
+                            Show Snippet
+                        </button>
+                    </div>
+                    
+                    <div id="api-snippet-container" class="mt-3 d-none">
+                        <div class="bg-dark text-white p-3 rounded position-relative">
+                            <button class="btn btn-sm btn-ghost-light position-absolute top-0 end-0 m-2 p-1" 
+                                onclick="navigator.clipboard.writeText(this.nextElementSibling.textContent.trim())" 
+                                title="Copy to clipboard">
+                                <i class="ti ti-copy"></i>
+                            </button>
+                            <pre class="m-0 pe-4 small font-monospace" style="white-space: pre-wrap; ${s.base}"><span style="${s.cmd}">curl</span> <span style="${s.flag}">-X</span> <span style="${s.str}">'<span style="${s.kw}">POST</span>'</span> \\
+  <span style="${s.str}">'http://your-glpi/api.php/Assets/${type}/import'</span> \\
+  <span style="${s.flag}">-H</span> <span style="${s.str}">'accept: application/json'</span> \\
+  <span style="${s.flag}">-H</span> <span style="${s.str}">'Authorization: Bearer YOUR_TOKEN'</span> \\
+  <span style="${s.flag}">-F</span> <span style="${s.str}">"file=@data.csv"</span> \\
+  <span style="${s.flag}">-H</span> <span style="${s.str}">'Content-Type: text/csv'</span> \\
+  <span style="${s.flag}">-d</span> <span style="${s.str}">'{\n    "templates_id": "${template.id}"\n  }'</span></pre>
+                        </div>
+                        <div class="text-muted small mt-2">
+                            <i class="ti ti-info-circle me-1"></i>
+                            Replace tokens and URL with your instance details.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
     }
 
     /**
