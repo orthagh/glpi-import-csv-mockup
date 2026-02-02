@@ -61,14 +61,15 @@ export class MockGlpi {
      * @returns {Promise<Object>} Import results
      */
     static async simulateImport(params, onProgress) {
-        const { data, mappings, glpiType } = params;
+        const { data, mappings, glpiType, dryRun = false } = params;
         const totalRows = data.length;
         
         const results = {
             success: 0,
             warnings: 0,
             errors: 0,
-            log: []
+            log: [],
+            isDryRun: dryRun
         };
         
         for (let i = 0; i < totalRows; i++) {
@@ -86,7 +87,9 @@ export class MockGlpi {
                 results.log.push({
                     type: 'success',
                     row: i + 1,
-                    message: `Created ${glpiType}: ${row[0] || 'Item ' + (i + 1)}`
+                    message: dryRun 
+                        ? `[Dry Run] Would create ${glpiType}: ${row[0] || 'Item ' + (i + 1)}`
+                        : `Created ${glpiType}: ${row[0] || 'Item ' + (i + 1)}`
                 });
             } else if (outcome > 0.05) {
                 // Warning (10% of the time)
@@ -94,7 +97,9 @@ export class MockGlpi {
                 results.log.push({
                     type: 'warning',
                     row: i + 1,
-                    message: `Partial import for row ${i + 1}: Some fields skipped`
+                    message: dryRun
+                        ? `[Dry Run] Would partial import for row ${i + 1}: Some fields skipped`
+                        : `Partial import for row ${i + 1}: Some fields skipped`
                 });
             } else {
                 // Error (5% of the time)
@@ -102,7 +107,9 @@ export class MockGlpi {
                 results.log.push({
                     type: 'error',
                     row: i + 1,
-                    message: `Failed to import row ${i + 1}: Validation error`
+                    message: dryRun
+                        ? `[Dry Run] Would fail to import row ${i + 1}: Validation error`
+                        : `Failed to import row ${i + 1}: Validation error`
                 });
             }
             

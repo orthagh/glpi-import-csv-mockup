@@ -10,6 +10,7 @@ export class Step4Import {
         this.app = app;
         this.isImporting = false;
         this.importComplete = false;
+        this.isDryRun = false;
         this.searchQuery = '';
     }
     
@@ -89,6 +90,10 @@ export class Step4Import {
                     <button class="btn btn-ghost-secondary" onclick="window.csvImportApp.wizard.prevStep()">
                         Back
                     </button>
+                    <button class="btn btn-outline-primary" id="start-dry-run">
+                        <i class="ti ti-test-pipe me-2"></i>
+                        Dry Run
+                    </button>
                     <button class="btn btn-success" id="start-import">
                         <i class="ti ti-player-play me-2"></i>
                         Start Import
@@ -106,7 +111,7 @@ export class Step4Import {
         return `
             <div class="step-content">
                 <div class="text-center mb-4">
-                    <h2 class="display-6 fw-bold mb-3">Importing...</h2>
+                    <h2 class="display-6 fw-bold mb-3">${this.isDryRun ? 'Simulating Import...' : 'Importing...'}</h2>
                     <p class="text-muted">Please wait while your data is being processed</p>
                 </div>
                 
@@ -157,8 +162,8 @@ export class Step4Import {
                             <path d="M35 60l15 15l35 -35" stroke="#2fb344" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </div>
-                    <h2 class="display-6 fw-bold mb-3">Import Complete!</h2>
-                    <p class="text-muted">Processed ${total} items</p>
+                    <h2 class="display-6 fw-bold mb-3">${this.isDryRun ? 'Dry Run Complete' : 'Import Complete!'}</h2>
+                    <p class="text-muted">${this.isDryRun ? 'Simulation complete for' : 'Processed'} ${total} items</p>
                 </div>
                 
                 <div class="report-stats">
@@ -214,6 +219,12 @@ export class Step4Import {
                         <i class="ti ti-download me-1"></i>
                         Export Report
                     </button>
+                    ${this.isDryRun ? `
+                        <button class="btn btn-success" id="start-real-import">
+                            <i class="ti ti-player-play me-2"></i>
+                            Start Real Import
+                        </button>
+                    ` : ''}
                     <button class="btn btn-primary" onclick="window.csvImportApp.reset()">
                         <i class="ti ti-refresh me-1"></i>
                         New Import
@@ -230,7 +241,19 @@ export class Step4Import {
         // Start import button
         const startBtn = document.getElementById('start-import');
         if (startBtn) {
-            startBtn.addEventListener('click', () => this.startImport());
+            startBtn.addEventListener('click', () => this.startImport(false));
+        }
+
+        // Dry run button
+        const dryRunBtn = document.getElementById('start-dry-run');
+        if (dryRunBtn) {
+            dryRunBtn.addEventListener('click', () => this.startImport(true));
+        }
+        
+        // Start real import from report
+        const realImportBtn = document.getElementById('start-real-import');
+        if (realImportBtn) {
+            realImportBtn.addEventListener('click', () => this.startImport(false));
         }
         
         // Export report button
@@ -272,8 +295,10 @@ export class Step4Import {
     
     /**
      * Start the import process
+     * @param {boolean} dryRun - Whether this is a simulation
      */
-    async startImport() {
+    async startImport(dryRun = false) {
+        this.isDryRun = dryRun;
         this.isImporting = true;
         this.importComplete = false;
         this.render();
@@ -288,7 +313,8 @@ export class Step4Import {
                 {
                     data: this.app.state.csvData.data,
                     mappings: this.app.state.mappings,
-                    glpiType: this.app.state.glpiType
+                    glpiType: this.app.state.glpiType,
+                    dryRun: this.isDryRun
                 },
                 (progress) => {
                     // Update progress UI
